@@ -97,22 +97,21 @@
     <p>Join the ultimate Free Fire showdown of the summer!</p>
     <p class="date">🗓️ July 10 - July 20, 2025</p>
     <div class="countdown" id="countdown"></div>
-    <a href="#register" class="btn">Register Now</a>
   </header>
 
   <section class="details">
     <h2>Tournament Details</h2>
     <ul>
-      <li>💰 Prize Pool: $5,000+</li>
-      <li>🎮 Game: Free Fire (Custom Rooms)</li>
-      <li>📍 Mode: Squad (4v4)</li>
-      <li>🎥 Live on: YouTube & Discord</li>
+      <li>💰 Prize Pool: <b>BDT 5,000+</b></li>
+      <li>🎮 Game: Free Fire (FULL MAP)</li>
+      <li>📍 Mode: Squad (4)</li>
+      <li>🎥 Live on: YouTube & Facebook</li>
     </ul>
   </section>
 
   <section id="register" class="register">
     <h2>Team Registration</h2>
-    <form action="https://script.google.com/macros/s/AKfycbzidmJu7pH7NV0ha-gfgtkVj96TGBV6fSElZLZDLTb39B7nbPbg0gWPG42o6RfOS4ih/exec" method="POST">
+    <form id="registerForm">
       <input type="text" name="teamName" placeholder="Team Name" required />
       <input type="text" name="leaderName" placeholder="Leader Name" required />
       <input type="email" name="email" placeholder="Contact Email" required />
@@ -131,53 +130,38 @@
   </footer>
 
   <script>
-    const countdown = document.getElementById("countdown");
-    const eventDate = new Date("July 10, 2025 12:00:00").getTime();
+    
 
-    const timer = setInterval(function () {
-      const now = new Date().getTime();
-      const distance = eventDate - now;
+    document.getElementById("registerForm").addEventListener("submit", function (e) {
+      e.preventDefault();
 
-      if (distance < 0) {
-        clearInterval(timer);
-        countdown.innerHTML = "🏁 Event has started!";
-        return;
-      }
+      const form = e.target;
+      const data = new FormData(form);
 
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-      countdown.innerHTML = `⏳ ${days}d ${hours}h ${minutes}m ${seconds}s`;
-    }, 1000);
-  </script>
-  <script>
-  document.getElementById("registerForm").addEventListener("submit", function (e) {
-    e.preventDefault(); // Stop form from submitting the default way
-
-    const form = e.target;
-    const data = new FormData(form);
-
-    fetch("https://script.google.com/macros/s/AKfycbwjmugBe5pSNoUDlrxfLKbP-zjBX2WCC0ZpA6HqFi01W_I52KQmyzu5hSlRDhVS_ZME/exec", {
-      method: "POST",
-      body: data,
-    })
-    .then((res) => res.json())
-    .then((res) => {
-      if (res.status === "success") {
-        // 👇 Only redirect if the server response says it worked
-        window.location.href = "https://www.facebook.com/";
-      } else {
-        alert("❌ Submission failed: " + res.message);
-      }
-    })
-    .catch((err) => {
-      alert("⚠️ An error occurred. Please try again later.");
-      console.error(err);
+      fetch("https://script.google.com/macros/s/AKfycbzidmJu7pH7NV0ha-gfgtkVj96TGBV6fSElZLZDLTb39B7nbPbg0gWPG42o6RfOS4ih/exec", {
+        method: "POST",
+        body: data,
+      })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.status === "success") {
+          document.body.innerHTML = `
+            <div style="padding: 50px; text-align: center; font-size: 1.5rem;">
+              <h1 style="color: #00f2ff;">✅ Registration Complete!</h1>
+              <p>Thanks for joining the Rogue Reble Summer Championship 2025.</p>
+              <p>Check your email for confirmation details.</p>
+              <a href="https://www.facebook.com/roguereble" style="margin-top: 20px; display: inline-block; background: #00f2ff; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none;">Back to Home</a>
+            </div>
+          `;
+        } else {
+          alert("Submission failed: " + res.message);
+        }
+      })
+      .catch((err) => {
+        alert("An error occurred. Please try again later.");
+        console.error(err);
+      });
     });
-  });
-</script>
-
+  </script>
 </body>
 </html>
